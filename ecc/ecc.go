@@ -3,6 +3,7 @@ package ecc
 import (
 	"crypto/elliptic"
 	"crypto/rand"
+	"elliptic-curve-benchmark-go/random"
 	"math/big"
 )
 
@@ -17,7 +18,10 @@ func GenerateKeyPair() (elliptic.Curve, []byte, Point) {
 	return curve, privateKey, Point{x: x, y: y}
 }
 
-func Encrypt(curve elliptic.Curve, publicKey Point, nonce, m *big.Int) (Point, Point) {
+func Encrypt(curve elliptic.Curve, publicKey Point, m *big.Int) (Point, Point) {
+	// Generate nonce
+	nonce := random.GenerateRandomModQ()
+
 	// Encode the message as a point
 	encodedMessage := EncodeMessageAsPoint(curve, m)
 
@@ -60,4 +64,8 @@ func (p *Point) Compare(point *Point) bool {
 	}
 
 	return true
+}
+
+func (p *Point) String() string {
+	return p.x.String() + ", " + p.y.String()
 }
