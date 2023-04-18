@@ -39,6 +39,15 @@ func Encrypt(publicKey PublicKey, nonce, m *big.Int) (*big.Int, *big.Int) {
 	return &alpha, &beta
 }
 
+func Decrypt(publicKey PublicKey, secretKey, alpha, beta *big.Int) *big.Int {
+	s := big.NewInt(0).Exp(alpha, secretKey, publicKey.P)
+	s.ModInverse(s, publicKey.P)
+	s.Mul(s, beta)
+	s.Mod(s, publicKey.P)
+
+	return s
+}
+
 func GenerateRandomModQ() *big.Int {
 	q, _ := big.NewInt(0).SetString("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF43", 16)
 	number, err := rand.Int(rand.Reader, q)
