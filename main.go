@@ -15,7 +15,7 @@ func main() {
 	// ElGamal Elliptic Curves
 	curve, _, publicKey := ecc.GenerateKeyPair()
 	eccTimeStart := time.Now()
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < amountOfSamples; i++ {
 		ecc.Encrypt(curve, publicKey, big.NewInt(1))
 	}
 	eccTimeElapsed := time.Since(eccTimeStart)
@@ -25,7 +25,7 @@ func main() {
 	// Exponential ElGamal
 	elgamalTimeStart := time.Now()
 	_, elgamalPublicKey := elgamal.GenerateKeyPair()
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < amountOfSamples; i++ {
 		elgamal.Encrypt(elgamalPublicKey, big.NewInt(1))
 	}
 	elgamalTimeElapsed := time.Since(elgamalTimeStart)
