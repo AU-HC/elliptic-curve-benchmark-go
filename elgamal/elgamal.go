@@ -59,3 +59,7 @@ func Decrypt(secretKey SecretKey, alpha, beta *big.Int) *big.Int {
 
 	return s
 }
+
+type Ciphertext struct {
+	Alpha, Beta *big.Int
+}

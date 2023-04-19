@@ -69,3 +69,7 @@ func (p *Point) Compare(point *Point) bool {
 func (p *Point) String() string {
 	return p.x.String() + ", " + p.y.String()
 }
+
+type Ciphertext struct {
+	C1, C2 Point
+}
