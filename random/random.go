@@ -15,3 +15,13 @@ func GenerateRandomModQ() *big.Int {
 
 	return number
 }
+
+func GetZeroOrOne() *big.Int {
+	number, err := rand.Int(rand.Reader, big.NewInt(2))
+
+	if err != nil {
+		panic(err)
+	}
+
+	return number
+}

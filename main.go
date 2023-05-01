@@ -3,8 +3,8 @@ package main
 import (
 	"elliptic-curve-benchmark-go/ecc"
 	"elliptic-curve-benchmark-go/elgamal"
+	"elliptic-curve-benchmark-go/random"
 	"fmt"
-	"math/big"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func benchmarkEncryption(amountOfSamples int) {
 	curve, _, publicKey := ecc.GenerateKeyPair()
 	eccTimeStart := time.Now()
 	for i := 0; i < amountOfSamples; i++ {
-		ecc.Encrypt(curve, publicKey, big.NewInt(0))
+		ecc.Encrypt(curve, publicKey, random.GetZeroOrOne())
 	}
 	eccTimeElapsed := time.Since(eccTimeStart)
 	informationString := fmt.Sprintf("ElGamal Elliptic Curves encryption with %d samples took: %dms", amountOfSamples, eccTimeElapsed.Milliseconds())
@@ -37,7 +37,7 @@ func benchmarkEncryption(amountOfSamples int) {
 	elgamalTimeStart := time.Now()
 	_, elgamalPublicKey := elgamal.GenerateKeyPair()
 	for i := 0; i < amountOfSamples; i++ {
-		elgamal.Encrypt(elgamalPublicKey, big.NewInt(0))
+		elgamal.Encrypt(elgamalPublicKey, random.GetZeroOrOne())
 	}
 	elgamalTimeElapsed := time.Since(elgamalTimeStart)
 	informationString = fmt.Sprintf("Exponential ElGamal encryption with %d samples took: %dms", amountOfSamples, elgamalTimeElapsed.Milliseconds())
@@ -51,14 +51,14 @@ func benchmarkDecryption(amountOfSamples int) {
 
 	curve, eccSecretKey, eccPublicKey := ecc.GenerateKeyPair()
 	for i := 0; i < amountOfSamples; i++ {
-		c1, c2 := ecc.Encrypt(curve, eccPublicKey, big.NewInt(0))
+		c1, c2 := ecc.Encrypt(curve, eccPublicKey, random.GetZeroOrOne())
 
 		eccCiphertexts[i] = ecc.Ciphertext{C1: c1, C2: c2}
 	}
 
 	elgamalSecretKey, elgamalPublicKey := elgamal.GenerateKeyPair()
 	for i := 0; i < amountOfSamples; i++ {
-		alpha, beta := elgamal.Encrypt(elgamalPublicKey, big.NewInt(0))
+		alpha, beta := elgamal.Encrypt(elgamalPublicKey, random.GetZeroOrOne())
 		elgamalCiphertexts[i] = elgamal.Ciphertext{Alpha: alpha, Beta: beta}
 	}
 
